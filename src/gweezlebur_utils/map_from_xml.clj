@@ -16,6 +16,12 @@
             (and (= (count content) 1)
                  (instance? String text))
                  (condp = type
+                     ;; Things that don't work
+                     ;; - yaml
+                     ;; - metadata
+                     ;; - attributes
+                     ;; - files
+                     ;; - base64
                      "integer" (Integer. text)
                      "boolean" (or (= text "true")
                                    (= text "1"))

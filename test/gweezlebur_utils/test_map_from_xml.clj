@@ -1,19 +1,11 @@
-(ns gweezlebur-utils.test.map-from-xml
+(ns gweezlebur-utils.test-map-from-xml
   (:use [gweezlebur-utils.map-from-xml] :reload-all)
-  (:use [clojure.test])
-  (:require [clojure.xml :as xml]
-            [clojure.contrib.prxml :as prxml]))
+  (:use clojure.test)
+  (:require clojure.xml))
 
-
+;; copied from gweezlebur-utils.xml
 (defn xml-parse-string [s]
-  (xml/parse (java.io.ByteArrayInputStream. (.getBytes s))))
-
-;; Things that don't work
-;; - yaml
-;; - metadata
-;; - attributes
-;; - files
-;; - base64
+  (clojure.xml/parse (java.io.ByteArrayInputStream. (.getBytes s))))
 
 (testing "map/from-xml"
   (let [album-xml-str
@@ -75,33 +67,4 @@
       (some #{{:image "jt_backcover.jpg"}} (album :images))
       (is (vector? (album :comments)) "Empty but type=array")
       (is (vector? (album :links)) "Single element but type=array")
-      (is (= (first (album :links)) {:website "http://jenniferteeter.com"}))
-      )
-    )
-  )
-
-;; (let [test-xml-string "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>
-;; <note>
-;;   <to>Michael</to>
-;;   <headers>
-;;     <date>2010-09-14</date>
-;;     <subject>Testing</subject>
-;;   </headers>
-;;   <body>Don't forget me to write your tests!</body>
-;; </note>"
-;;       xmldoc (xml-parse-string test-xml-string)]
-;;   (deftest t-xml-parse-string   
-;;     (is (map? xmldoc))
-;;     (is (= (:tag xmldoc) :note))
-;;     (is (= (:tag (first (:content xmldoc)) :to))))
-
-;;   (deftest t-xml2map
-;;     (let [note (xml2map xmldoc)]
-;;       (is (map? note))
-;;       (is (= (:to note) "Michael"))
-;;       (is (= (-> note :headers :subject) "Testing"))
-;;     )
-;;   )
-;;   )
-
-(run-tests)
+      (is (= (first (album :links)) {:website "http://jenniferteeter.com"})))))
